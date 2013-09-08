@@ -6,82 +6,110 @@
 //
 
 #import "MTLog.h"
+#import "MTLogPlugin.h"
 
-static MTLog* __mtLog = nil;
-
-#pragma mark - MTLogFilter
-
-typedef NS_ENUM(int, MTLogFilterTypes) {
-    MTLogFilterTypeFileName
-};
-
-@interface MTLogFilter : NSObject
-@property (assign, nonatomic) int type;
-@property (strong, nonatomic) NSString* value;
-@property (strong, nonatomic) NSArray* args;
-@end
-
-@implementation MTLogFilter
-@end
+//load all default plugins
+#import "MTLogPluginRegister.h"
+#import "MTLogPluginRemove.h"
+#import "MTLogPluginFilter.h"
+#import "MTLogPluginSearch.h"
+#import "MTLogPluginRoute.h"
+#import "MTLogPluginPrefix.h"
 
 #pragma mark - MTLog
 @implementation MTLog
 {
-    NSMutableDictionary* _filters;
-    NSMutableDictionary* _pendingFilters;
-}
-
-+(void)load
-{
-#ifdef DEBUG
-    if (__mtLog==nil) {
-        __mtLog = [[MTLog alloc] init];
-    }
-#endif
+    NSMutableDictionary* _registeredPlugins;
+    
+    NSMutableArray* _enabledPlugins;
+    NSMutableArray* _pendingPlugins;
 }
 
 -(instancetype)init
 {
     self = [super init];
     if (self) {
-        _filters = [@{} mutableCopy];
+        //initialize filters
+        _registeredPlugins = [@{
+                                @"prefix":   [MTLogPluginPrefix class],
+                                @"register": [MTLogPluginRegister class],
+                                @"filter":   [MTLogPluginFilter class],
+                                @"remove":   [MTLogPluginRemove class],
+                                @"search":   [MTLogPluginSearch class],
+                                @"route":    [MTLogPluginRoute class]
+                                } mutableCopy];
+        _pendingPlugins = [@[] mutableCopy];
+        _enabledPlugins = [@[] mutableCopy];
+        
+        //set the default prefix
+        [_enabledPlugins addObject:
+         [[MTLogPluginPrefix alloc] initWithName:@"prefix" value:@"set" args:@[@"default"]]
+         ];
     }
     return self;
 }
 
-+(MTLog*)sharedInstance
-{
-    return __mtLog;
++ (instancetype)sharedInstance {
+    static id sharedInstance = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[self alloc] init];
+    });
+    
+    return sharedInstance;
 }
 
-+(void)log:(NSString*)fileName lineNr:(NSNumber*)lineNr text:(NSString *)format, ...
+- (id)objectAtKeyedSubscript:(id <NSCopying>)key
+{
+    return [_registeredPlugins objectForKey:key];
+}
+
+- (void)setObject:(id)obj forKeyedSubscript:(id <NSCopying>)key
+{
+    //remove a plugin
+    if (obj==nil) {
+        [_registeredPlugins removeObjectForKey:key];
+        return;
+    }
+    
+    //add a plugin
+    _registeredPlugins[key] = obj;
+}
+
+-(NSString*)description
+{
+    return [NSString stringWithFormat:@"MTLog: \n"
+            "plugins: %@\n", _enabledPlugins
+            ];
+}
+
++(void)log:(NSString*)fileName method:(NSString*)method lineNr:(NSNumber*)lineNr text:(NSString *)format, ...
 {
     va_list args;
     va_start(args, format);
-    [[self sharedInstance] log:fileName lineNr:lineNr text:format, args];
+    [[self sharedInstance] log:fileName method:(NSString*)method lineNr:lineNr text:format, args];
     va_end(args);
 }
 
--(NSString*)parseFilter:(NSString*)format
+-(NSString*)parseLogMessage:(NSString*)format
 {
     __block NSString* result = format;
-    __block NSString* filterID = nil;
-    __block NSString* command = nil;
+    
+    __block NSString* name = nil;
     __block NSString* value = nil;
     __block NSArray* args = nil;
 
-    MTLogFilter* filter = [[MTLogFilter alloc] init];
-    
     //find the filter command
-    NSRegularExpression *regEx = [[NSRegularExpression alloc] initWithPattern:@"(filter|unfilter):([^\( ]+)(\\(.+?\\))?[ ]?"
+    NSRegularExpression *regEx = [[NSRegularExpression alloc] initWithPattern:@"^_(\\w+):([^\( ]+)(\\((.+?)?\\))?[ ]?"
                                                                       options:kNilOptions
                                                                         error:nil];
-
+    
     [regEx enumerateMatchesInString:result options:kNilOptions range:NSMakeRange(0, result.length)
                          usingBlock:^(NSTextCheckingResult *match, NSMatchingFlags flags, BOOL *stop){
-
+                             
                              //fetch the command
-                             command = [result substringWithRange: [match rangeAtIndex:1]];
+                             name = [result substringWithRange: [match rangeAtIndex:1]];
                              
                              //fetch the filter value
                              value = [result substringWithRange: [match rangeAtIndex:2]];
@@ -89,76 +117,86 @@ typedef NS_ENUM(int, MTLogFilterTypes) {
                              NSString* argsString = nil;
                              
                              //fetch the filter arguments
-                             if ([match rangeAtIndex:3].location != NSNotFound) {
+                             if ([match rangeAtIndex:4].location != NSNotFound) {
                                  argsString = [result substringWithRange: [match rangeAtIndex:4]];
                                  args = [argsString componentsSeparatedByString:@","];
                              }
-                             
-                             //build the filter ID
-                             filterID = [NSString stringWithFormat:@"%@:%@", value, argsString];
                              
                              //remove the filter command from the log message
                              result = [result stringByReplacingCharactersInRange:match.range withString:@""];
                              
                              *stop = YES;
-    }];
+                         }];
     
-    //file filter
-    if ([value hasSuffix:@".m"] || [value hasSuffix:@".mm"]) {
+    if (name && value) {
         
-        if ([command isEqualToString:@"filter"]) {
-            //add file filter
-            filter.type = MTLogFilterTypeFileName;
-            filter.value = value;
-            filter.args = args;
-            _pendingFilters[filterID] = filter;
-            
-        } else if ([command isEqualToString:@"unfilter"]) {
-            //remove file filter
-            [_filters removeObjectForKey: filterID];
-            
+        Class pluginClass = _registeredPlugins[name];
+        if (pluginClass==nil) {
+            return [NSString stringWithFormat:@"MTLog:Could not find registered class for plugin '%@'! %@", name, format];
         }
         
-        return result;
+        id plugin = [(MTLogPlugin*)[pluginClass alloc] initWithName:name value:value args:args];
+        if (plugin==nil) {
+            return [NSString stringWithFormat:@"MTLog:Could not create a plugin out of the command '%@(%@)'! %@", name, [args componentsJoinedByString:@","], format];
+        }
+        
+        if ([(MTLogPlugin*)plugin affectsFirstLogmessage]==NO) {
+            [_pendingPlugins addObject: plugin];
+        } else {
+            [_enabledPlugins addObject: plugin];
+        }
+        
     }
     
     return result;
 }
 
--(void)log:(NSString*)fileName lineNr:(NSNumber*)lineNr text:(NSString *)format, ...
+-(void)log:(NSString*)fileName method:(NSString*)method lineNr:(NSNumber*)lineNr text:(NSString *)format, ...
 {
-    if ([format hasPrefix:@"filter:"] || [format hasPrefix:@"unfilter:"]) format = [self parseFilter: format];
+    __block NSString* text = format;
     
-    for (MTLogFilter* filter in [_filters allValues]) {
-        switch (filter.type) {
-            case MTLogFilterTypeFileName:
-                if ([fileName isEqualToString: filter.value]==NO) {
-                    return;
-                }
-                break;
-                
-            default:
-                break;
-        }
+    //parse the command out of the log message
+    if ([text hasPrefix:@"_"]) {
+        text = [self parseLogMessage:text];
     }
     
-    format = [NSString stringWithFormat:@"%@:%@ > %@",fileName, lineNr, format];
-    
-    va_list args;
-    va_start(args, format);
-    NSLogv(format, args);
-    va_end(args);
-    
-    if ([_pendingFilters count]>0) {
-        [self mergePendingFilters];
-    }
-}
+    NSArray* prettyFuncParts;
+    NSArray* env;
 
--(void)mergePendingFilters
-{
-    for (NSString* key in [_pendingFilters allKeys]) {
-        _filters[key] = _pendingFilters[key];
-        [_pendingFilters removeObjectForKey: key];
+    //build env variables
+    if (_enabledPlugins.count>0) {
+        prettyFuncParts = [[method substringWithRange:NSMakeRange(2, method.length-3)] componentsSeparatedByString:@" "];
+        env = @[
+                fileName, prettyFuncParts.firstObject, prettyFuncParts.lastObject, lineNr, _enabledPlugins, _registeredPlugins
+            ];
+    }
+    
+    [_enabledPlugins enumerateObjectsUsingBlock:^(MTLogPlugin* plugin, NSUInteger idx, BOOL *stop) {
+       text = [plugin preProcessLogMessage: text env: env];
+    }];
+
+    //print to the console
+    if (text.length>0) {
+        va_list args;
+        va_start(args, format);
+#ifdef DEBUG
+        NSLogv(text, args);
+#endif
+        va_end(args);
+    }
+    
+    //post processing
+    [_enabledPlugins enumerateObjectsUsingBlock:^(MTLogPlugin* plugin, NSUInteger idx, BOOL *stop) {
+        [plugin postProcessLogMessage: text env: env];
+    }];
+
+    //merge any pending plugins
+    if ([_pendingPlugins count]>0) {
+        for (id plugin in _pendingPlugins) {
+            [_enabledPlugins addObject: plugin];
+        }
+        
+        [_pendingPlugins removeAllObjects];
     }
 }
 

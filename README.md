@@ -1,4 +1,5 @@
 MTLog
 =====
 
-Not your ordinary NSLog replacement
+NSLog replacement for coders!
+
