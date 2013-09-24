@@ -1,0 +1,712 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="html/html; charset=utf-8" />
+		<title>MTLogPlugin Class Reference</title>
+		<meta id="xcode-display" name="xcode-display" content="render"/>
+		<meta name="viewport" content="width=550" />
+		<link rel="stylesheet" type="text/css" href="../css/styles.css" media="all" />
+		<link rel="stylesheet" type="text/css" media="print" href="../css/stylesPrint.css" />
+		<meta name="generator" content="appledoc 2.1 (build 840)" />
+	</head>
+	<body>
+		<header id="top_header">
+			<div id="library" class="hideInXcode">
+				<h1><a id="libraryTitle" href="../index.html">MTLog </a></h1>
+				<a id="developerHome" href="../index.html">Marin Todorov, Underplot</a>
+			</div>
+			
+			<div id="title" role="banner">
+				<h1 class="hideInXcode">MTLogPlugin Class Reference</h1>
+			</div>
+			<ul id="headerButtons" role="toolbar">
+				<li id="toc_button">
+					<button aria-label="Show Table of Contents" role="checkbox" class="open" id="table_of_contents"><span class="disclosure"></span>Table of Contents</button>
+				</li>
+				<li id="jumpto_button" role="navigation">
+					<select id="jumpTo">
+	<option value="top">Jump To&#133;</option>
+	
+	<option value="overview">Overview</option>
+	
+	
+	
+	
+	<option value="tasks">Tasks</option>
+	
+	
+	
+	
+	
+	<option value="properties">Properties</option>
+	
+	<option value="//api/name/affectsFirstLogmessage">&nbsp;&nbsp;&nbsp;&nbsp;affectsFirstLogmessage</option>
+	
+	<option value="//api/name/args">&nbsp;&nbsp;&nbsp;&nbsp;args</option>
+	
+	<option value="//api/name/name">&nbsp;&nbsp;&nbsp;&nbsp;name</option>
+	
+	<option value="//api/name/pluginID">&nbsp;&nbsp;&nbsp;&nbsp;pluginID</option>
+	
+	<option value="//api/name/value">&nbsp;&nbsp;&nbsp;&nbsp;value</option>
+	
+	
+	
+	
+	<option value="class_methods">Class Methods</option>
+	
+	<option value="//api/name/expectedNumberOfArgumentsForCommand:">&nbsp;&nbsp;&nbsp;&nbsp;+ expectedNumberOfArgumentsForCommand:</option>
+	
+	
+	
+	
+	<option value="instance_methods">Instance Methods</option>
+	
+	<option value="//api/name/initWithName:value:args:">&nbsp;&nbsp;&nbsp;&nbsp;- initWithName:value:args:</option>
+	
+	
+	
+</select>
+				</li>
+			</ul>
+		</header>
+		<nav id="tocContainer" class="isShowingTOC">
+			<ul id="toc" role="tree">
+				
+<li role="treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#overview">Overview</a></span></li>
+
+
+
+
+<li role="treeitem" id="task_treeitem"><span class="nodisclosure"></span><span class="sectionName"><a href="#tasks">Tasks</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Plugin information">Plugin information</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Custom behaviour">Custom behaviour</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Basic plugin methods">Basic plugin methods</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#task_Initialization">Initialization</a></span></li>
+	
+</ul></li>
+
+
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#properties">Properties</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/affectsFirstLogmessage">affectsFirstLogmessage</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/args">args</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/name">name</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/pluginID">pluginID</a></span></li>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/value">value</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#class_methods">Class Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/expectedNumberOfArgumentsForCommand:">expectedNumberOfArgumentsForCommand:</a></span></li>
+	
+</ul></li>
+
+
+
+<li role="treeitem" class="children"><span class="disclosure"></span><span class="sectionName"><a href="#instance_methods">Instance Methods</a></span><ul>
+	
+	<li><span class="nodisclosure"></span><span class="sectionName"><a href="#//api/name/initWithName:value:args:">initWithName:value:args:</a></span></li>
+	
+</ul></li>
+
+
+			</ul>
+		</nav>
+		<article>
+			<div id="contents" class="isShowingTOC" role="main">
+				<a title="MTLogPlugin Class Reference" name="top"></a>
+				<div class="main-navigation navigation-top">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="header">
+					<div class="section-header">
+						<h1 class="title title-header">MTLogPlugin Class Reference</h1>
+					</div>		
+				</div>
+				<div id="container">	
+					
+					<div class="section section-specification"><table cellspacing="0"><tbody>
+						<tr>
+	<td class="specification-title">Inherits from</td>
+	<td class="specification-value">NSObject</td>
+</tr><tr>
+	<td class="specification-title">Conforms to</td>
+	<td class="specification-value"><a href="../Protocols/MTLogPluginProtocol.html">MTLogPluginProtocol</a></td>
+</tr><tr>
+	<td class="specification-title">Declared in</td>
+	<td class="specification-value">MTLogPlugin.h<br />MTLogPlugin.m</td>
+</tr>
+						</tbody></table></div>
+					
+					
+					
+					
+					<div class="section section-overview">
+						<a title="Overview" name="overview"></a>
+						<h2 class="subtitle subtitle-overview">Overview</h2>
+						<p>MTLogPlugin is an <b>abstract implementation</b> of an MTLog plugin class.</p>
+
+<p>To build a custom plugin you need to subclass MTLogPlugin and implemented at least one method <a href="#//api/name/expectedNumberOfArgumentsForCommand:">[MTLogPlugin expectedNumberOfArgumentsForCommand:]</a></p>
+
+<p>You can override the custom initializer method <a href="#//api/name/initWithName:value:args:">[MTLogPlugin initWithName:value:args:]</a> if you want to customize the class initialization and/or you
+can additionally implement all the methods from the <a href="../Protocols/MTLogPluginProtocol.html">MTLogPluginProtocol</a></p>
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-tasks">
+						<a title="Tasks" name="tasks"></a>
+						<h2 class="subtitle subtitle-tasks">Tasks</h2>
+						
+						
+						<a title="Plugin information" name="task_Plugin information"></a>
+						<h3 class="subsubtitle task-title">Plugin information</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/name">&nbsp;&nbsp;name</a></code>
+		<span class="tooltip"><p>The name of the plugin command.</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/value">&nbsp;&nbsp;value</a></code>
+		<span class="tooltip"><p>The specific call to the plugin command.</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/args">&nbsp;&nbsp;args</a></code>
+		<span class="tooltip"><p>The <a href="#//api/name/name">name</a> of the plugin command.</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li><li>
+	<span class="tooltip">
+		<code><a href="#//api/name/pluginID">&nbsp;&nbsp;pluginID</a></code>
+		<span class="tooltip"><p>A string ID to uniquely identify a combination of plugin, command and an argument list.</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+						
+						<a title="Custom behaviour" name="task_Custom behaviour"></a>
+						<h3 class="subsubtitle task-title">Custom behaviour</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/affectsFirstLogmessage">&nbsp;&nbsp;affectsFirstLogmessage</a></code>
+		<span class="tooltip"><p>Whether the plugin should affect a message immediately following the command.</p></span>
+	</span>
+	<span class="task-item-suffix">property</span>
+	
+</li>
+						</ul>
+						
+						
+						<a title="Basic plugin methods" name="task_Basic plugin methods"></a>
+						<h3 class="subsubtitle task-title">Basic plugin methods</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/expectedNumberOfArgumentsForCommand:">+&nbsp;expectedNumberOfArgumentsForCommand:</a></code>
+		<span class="tooltip"><p>Returns the minimum and maximum number of expected arguments for a given command to the plugin.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+						
+						<a title="Initialization" name="task_Initialization"></a>
+						<h3 class="subsubtitle task-title">Initialization</h3>
+
+						<ul class="task-list">
+							<li>
+	<span class="tooltip">
+		<code><a href="#//api/name/initWithName:value:args:">&ndash;&nbsp;initWithName:value:args:</a></code>
+		<span class="tooltip"><p>Creates a new instance of the plugin. Usually you do not call this method and create plugin instances yourself.</p></span>
+	</span>
+	
+	
+</li>
+						</ul>
+						
+					</div>
+					
+					
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Properties" name="properties"></a>
+						<h2 class="subtitle subtitle-methods">Properties</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/affectsFirstLogmessage" title="affectsFirstLogmessage"></a>
+	<h3 class="subsubtitle method-title">affectsFirstLogmessage</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Whether the plugin should affect a message immediately following the command.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (assign, nonatomic) BOOL affectsFirstLogmessage</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>For example:</p>
+
+<pre>NSLog(@"_filter:MyClass.m My Message"); //there's a message immediately following a command
+...
+NSLog(@"_filter:MyClass.m");
+NSLog(@"My other message"); //this message is separate from the command message
+</pre>
+
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MTLogPlugin.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/args" title="args"></a>
+	<h3 class="subsubtitle method-title">args</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The <a href="#//api/name/name">name</a> of the plugin command.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (strong, nonatomic) NSArray *args</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>I.e. for &ldquo;_filter:MyClass.m(10,20)&rdquo;, args is a 2 item array [10,20]. Set by <a href="#//api/name/initWithName:value:args:">[MTLogPlugin initWithName:value:args:]</a></p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MTLogPlugin.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/name" title="name"></a>
+	<h3 class="subsubtitle method-title">name</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The name of the plugin command.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (strong, nonatomic) NSString *name</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>I.e. for &ldquo;_filter:MyClass.m&rdquo;, value equals &ldquo;filter&rdquo;. Set by <a href="#//api/name/initWithName:value:args:">[MTLogPlugin initWithName:value:args:]</a></p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MTLogPlugin.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/pluginID" title="pluginID"></a>
+	<h3 class="subsubtitle method-title">pluginID</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>A string ID to uniquely identify a combination of plugin, command and an argument list.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (strong, nonatomic, readonly) NSString *pluginID</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MTLogPlugin.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+						<div class="section-method">
+	<a name="//api/name/value" title="value"></a>
+	<h3 class="subsubtitle method-title">value</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>The specific call to the plugin command.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>@property (strong, nonatomic) NSString *value</code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>I.e. for &ldquo;_filter:MyClass.m&rdquo;, value equals &ldquo;MyClass.m&rdquo;. Set by <a href="#//api/name/initWithName:value:args:">[MTLogPlugin initWithName:value:args:]</a></p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MTLogPlugin.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Class Methods" name="class_methods"></a>
+						<h2 class="subtitle subtitle-methods">Class Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/expectedNumberOfArgumentsForCommand:" title="expectedNumberOfArgumentsForCommand:"></a>
+	<h3 class="subsubtitle method-title">expectedNumberOfArgumentsForCommand:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Returns the minimum and maximum number of expected arguments for a given command to the plugin.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>+ (NSRange)expectedNumberOfArgumentsForCommand:(NSString *)<em>command</em></code></div>
+
+    
+	
+	<div class="method-subsection arguments-section parameters">
+		<h4 class="method-subtitle parameter-title">Parameters</h4>
+		
+		<dl class="argument-def parameter-def">
+			<dt><em>command</em></dt>
+			<dd><p>the specific call part to a command. I.e. for &ldquo;_filter:MyClass.m&rdquo; command is &ldquo;MyClass.m&rdquo;</p></dd>
+		</dl>
+		
+	</div>
+	
+	
+	
+	<div class="method-subsection return">
+		<h4 class="method-subtitle parameter-title">Return Value</h4>
+		<p>an NSRange with the minimum and maximum number of arguments expected. If the command can take only X number of arguments return NSMakeRange(X,X)</p>
+	</div>
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>For a full example how to implement this feature lookup README.md, section &ldquo;Implementing the new "smilie&rdquo; command".</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MTLogPlugin.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+					
+					<div class="section section-methods">
+						<a title="Instance Methods" name="instance_methods"></a>
+						<h2 class="subtitle subtitle-methods">Instance Methods</h2>
+						
+						<div class="section-method">
+	<a name="//api/name/initWithName:value:args:" title="initWithName:value:args:"></a>
+	<h3 class="subsubtitle method-title">initWithName:value:args:</h3>
+	
+	
+	
+	<div class="method-subsection brief-description">
+		<p>Creates a new instance of the plugin. Usually you do not call this method and create plugin instances yourself.</p>
+	</div>		
+	
+    
+
+	<div class="method-subsection method-declaration"><code>- (instancetype)initWithName:(NSString *)<em>name</em> value:(NSString *)<em>value</em> args:(NSArray *)<em>args</em></code></div>
+
+    
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection discussion-section">
+		<h4 class="method-subtitle">Discussion</h4>
+		<p>When you log a command:</p>
+
+<pre>
+NSLog(@"_prefix:set($class $method) Log message");
+</pre>
+
+
+<p><a href="../Classes/MTLog.html">MTLog</a> takes care to parse the plugin <a href="#//api/name/name">name</a> (&ldquo;prefix&rdquo;), the <a href="#//api/name/value">value</a> (&ldquo;set&rdquo;) and argument list (1 list item &ndash; &ldquo;$class $method&rdquo;) and create plugin instance and add it ot the plugin chain. Therefore in most cases you would never need to create a plugin instance yourself.</p>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	<div class="method-subsection declared-in-section">
+		<h4 class="method-subtitle">Declared In</h4>
+		<code class="declared-in-ref">MTLogPlugin.h</code><br />
+	</div>				
+	
+	
+</div>
+						
+					</div>
+					
+					
+				</div>
+				<div class="main-navigation navigation-bottom">
+					<ul>
+	<li><a href="../index.html">Index</a></li>
+	<li><a href="../hierarchy.html">Hierarchy</a></li>
+</ul>
+				</div>
+				<div id="footer">
+					<hr />
+					<div class="footer-copyright">
+						<p><span class="copyright">&copy; 2013 Marin Todorov, Underplot. All rights reserved. (Last updated: 2013-09-17)</span><br />
+						
+						<span class="generator">Generated by <a href="http://appledoc.gentlebytes.com">appledoc 2.1 (build 840)</a>.</span></p>
+						
+					</div>
+				</div>
+			</div>
+		</article>
+		<script type="text/javascript">
+			function jumpToChange()
+			{
+				window.location.hash = this.options[this.selectedIndex].value;
+			}
+			
+			function toggleTOC()
+			{
+				var contents = document.getElementById('contents');
+				var tocContainer = document.getElementById('tocContainer');
+				
+				if (this.getAttribute('class') == 'open')
+				{
+					this.setAttribute('class', '');
+					contents.setAttribute('class', '');
+					tocContainer.setAttribute('class', '');
+					
+					window.name = "hideTOC";
+				}
+				else
+				{
+					this.setAttribute('class', 'open');
+					contents.setAttribute('class', 'isShowingTOC');
+					tocContainer.setAttribute('class', 'isShowingTOC');
+					
+					window.name = "";
+				}
+				return false;
+			}
+			
+			function toggleTOCEntryChildren(e)
+			{
+				e.stopPropagation();
+				var currentClass = this.getAttribute('class');
+				if (currentClass == 'children') {
+					this.setAttribute('class', 'children open');
+				}
+				else if (currentClass == 'children open') {
+					this.setAttribute('class', 'children');
+				}
+				return false;
+			}
+			
+			function tocEntryClick(e)
+			{
+				e.stopPropagation();
+				return true;
+			}
+			
+			function init()
+			{
+				var selectElement = document.getElementById('jumpTo');
+				selectElement.addEventListener('change', jumpToChange, false);
+				
+				var tocButton = document.getElementById('table_of_contents');
+				tocButton.addEventListener('click', toggleTOC, false);
+				
+				var taskTreeItem = document.getElementById('task_treeitem');
+				if (taskTreeItem.getElementsByTagName('li').length > 0)
+				{
+					taskTreeItem.setAttribute('class', 'children');
+					taskTreeItem.firstChild.setAttribute('class', 'disclosure');
+				}
+				
+				var tocList = document.getElementById('toc');
+				
+				var tocEntries = tocList.getElementsByTagName('li');
+				for (var i = 0; i < tocEntries.length; i++) {
+					tocEntries[i].addEventListener('click', toggleTOCEntryChildren, false);
+				}
+				
+				var tocLinks = tocList.getElementsByTagName('a');
+				for (var i = 0; i < tocLinks.length; i++) {
+					tocLinks[i].addEventListener('click', tocEntryClick, false);
+				}
+				
+				if (window.name == "hideTOC") {
+					toggleTOC.call(tocButton);
+				}
+			}
+			
+			window.onload = init;
+			
+			// If showing in Xcode, hide the TOC and Header
+			if (navigator.userAgent.match(/xcode/i)) {
+				document.getElementById("contents").className = "hideInXcode"
+				document.getElementById("tocContainer").className = "hideInXcode"
+				document.getElementById("top_header").className = "hideInXcode"
+			}
+			
+		</script>
+	</body>
+</html>

@@ -1,9 +1,17 @@
 //
 //  MTLog.m
 //
-//  Created by Marin Todorov on 3/9/13.
-//  Copyright (c) 2013 Underplot ltd. All rights reserved.
+//  @author Marin Todorov, http://www.touch-code-magazine.com
 //
+
+// Copyright (c) 2013 Marin Todorov, Underplot ltd.
+// This code is distributed under the terms and conditions of the MIT license.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+// The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+// The MIT License in plain English: http://www.touch-code-magazine.com/JSONModel/MITLicense
 
 #import "MTLog.h"
 #import "MTLogPlugin.h"
@@ -16,13 +24,26 @@
 #import "MTLogPluginRoute.h"
 #import "MTLogPluginPrefix.h"
 
-#pragma mark - MTLog
-@implementation MTLog
+@interface MTLog()
 {
     NSMutableDictionary* _registeredPlugins;
-    
-    NSMutableArray* _enabledPlugins;
     NSMutableArray* _pendingPlugins;
+}
+
+@end
+
+#pragma mark - MTLog
+@implementation MTLog
+
++ (instancetype)sharedInstance {
+    static id sharedInstance = nil;
+    
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedInstance = [[self alloc] init];
+    });
+    
+    return sharedInstance;
 }
 
 -(instancetype)init
@@ -47,34 +68,6 @@
          ];
     }
     return self;
-}
-
-+ (instancetype)sharedInstance {
-    static id sharedInstance = nil;
-    
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        sharedInstance = [[self alloc] init];
-    });
-    
-    return sharedInstance;
-}
-
-- (id)objectAtKeyedSubscript:(id <NSCopying>)key
-{
-    return [_registeredPlugins objectForKey:key];
-}
-
-- (void)setObject:(id)obj forKeyedSubscript:(id <NSCopying>)key
-{
-    //remove a plugin
-    if (obj==nil) {
-        [_registeredPlugins removeObjectForKey:key];
-        return;
-    }
-    
-    //add a plugin
-    _registeredPlugins[key] = obj;
 }
 
 -(NSString*)description
@@ -132,17 +125,20 @@
         
         Class pluginClass = _registeredPlugins[name];
         if (pluginClass==nil) {
-            return [NSString stringWithFormat:@"MTLog:Could not find registered class for plugin '%@'! %@", name, format];
+            return [NSString stringWithFormat:@"MTLog: Could not find registered class for plugin '%@'! %@", name, format];
         }
         
         id plugin = [(MTLogPlugin*)[pluginClass alloc] initWithName:name value:value args:args];
         if (plugin==nil) {
-            return [NSString stringWithFormat:@"MTLog:Could not create a plugin out of the command '%@(%@)'! %@", name, [args componentsJoinedByString:@","], format];
+            return [NSString stringWithFormat:@"MTLog: Could not create a plugin out of the command '%@(%@)'! %@", name, [args componentsJoinedByString:@","], format];
         }
         
         if ([(MTLogPlugin*)plugin affectsFirstLogmessage]==NO) {
             [_pendingPlugins addObject: plugin];
         } else {
+            if ([plugin respondsToSelector:@selector(willEnableForLog:)]) {
+                [plugin performSelector:@selector(willEnableForLog:) withObject:self];
+            }
             [_enabledPlugins addObject: plugin];
         }
         
@@ -153,7 +149,7 @@
 
 -(void)log:(NSString*)fileName method:(NSString*)method lineNr:(NSNumber*)lineNr text:(NSString *)format, ...
 {
-    __block NSString* text = format;
+    __block NSString* text = format?format:@"";
     
     //parse the command out of the log message
     if ([text hasPrefix:@"_"]) {
@@ -170,9 +166,12 @@
                 fileName, prettyFuncParts.firstObject, prettyFuncParts.lastObject, lineNr, _enabledPlugins, _registeredPlugins
             ];
     }
-    
+
     [_enabledPlugins enumerateObjectsUsingBlock:^(MTLogPlugin* plugin, NSUInteger idx, BOOL *stop) {
-       text = [plugin preProcessLogMessage: text env: env];
+        if ([plugin respondsToSelector:@selector(preProcessLogMessage:env:)]) {
+            text = [plugin preProcessLogMessage: text env: env];
+        }
+        NSAssert(text, @"");
     }];
 
     //print to the console
@@ -187,17 +186,45 @@
     
     //post processing
     [_enabledPlugins enumerateObjectsUsingBlock:^(MTLogPlugin* plugin, NSUInteger idx, BOOL *stop) {
-        [plugin postProcessLogMessage: text env: env];
+        if ([plugin respondsToSelector:@selector(postProcessLogMessage:env:)]) {
+            [plugin postProcessLogMessage: text env: env];
+        }
     }];
 
     //merge any pending plugins
     if ([_pendingPlugins count]>0) {
         for (id plugin in _pendingPlugins) {
+            if ([plugin respondsToSelector:@selector(willEnableForLog:)]) {
+                [plugin performSelector:@selector(willEnableForLog:) withObject:self];
+            }
             [_enabledPlugins addObject: plugin];
         }
         
         [_pendingPlugins removeAllObjects];
     }
+}
+
++(void)addPlugin:(id)plugin
+{
+    [[[self sharedInstance] enabledPlugins] addObject: plugin];
+}
+
++ (void)removePlugin:(id)plugin
+{
+    [[[self sharedInstance] enabledPlugins] removeObject: plugin];
+}
+
++ (NSArray*)pluginsByName:(NSString*)name
+{
+    NSMutableArray* result = [@[] mutableCopy];
+    
+    for (MTLogPlugin* plugin in [MTLog sharedInstance].enabledPlugins) {
+        if ([plugin.name isEqualToString: name]) {
+            [result addObject: plugin];
+        }
+    }
+    
+    return [result copy];
 }
 
 @end

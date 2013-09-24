@@ -1,0 +1,1 @@
+appledoc --project-name "MTLog" --project-version "0.6" --project-company "Marin Todorov, Underplot" --company-id com.underplot --output docs --exclude-output "MTLog/plugins" --no-create-docset --no-repeat-first-par MTLog
