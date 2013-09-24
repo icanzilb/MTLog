@@ -15,6 +15,10 @@
 
 #import <Foundation/Foundation.h>
 
+#ifdef TARGET_OS_MAC
+#import "NSArray+FirstObject.h"
+#endif
+
 typedef NS_ENUM(NSInteger, MTLogEnvIndexes) {
     MTLogFileName = 0,
     MTLogClassName,
