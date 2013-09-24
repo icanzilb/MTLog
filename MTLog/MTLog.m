@@ -163,7 +163,7 @@
     if (_enabledPlugins.count>0) {
         prettyFuncParts = [[method substringWithRange:NSMakeRange(2, method.length-3)] componentsSeparatedByString:@" "];
         env = @[
-                fileName, prettyFuncParts.firstObject, prettyFuncParts.lastObject, lineNr, _enabledPlugins, _registeredPlugins
+                fileName, prettyFuncParts[0], prettyFuncParts.lastObject, lineNr, _enabledPlugins, _registeredPlugins
             ];
     }
 
