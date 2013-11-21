@@ -179,7 +179,8 @@
         va_list args;
         va_start(args, format);
 #ifdef DEBUG
-        NSLogv(text, args);
+        //NSLogv(text, args);
+        vprintf([NSString stringWithFormat:@"%@\n", text].UTF8String, args);
 #endif
         va_end(args);
     }
