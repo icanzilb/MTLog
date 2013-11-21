@@ -51,7 +51,7 @@
     static NSMutableDictionary* counters;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        variables = @[@"$file", @"$class", @"$method", @"$line", @"$counter"];
+        variables = @[@"$file", @"$class", @"$method", @"$line", @"$counter", @"$timestamp"];
         counters = [@{} mutableCopy];
     });
     
@@ -70,6 +70,12 @@
                 NSString* prefix = [self.args.firstObject copy];
                 for (int i=0;i<4;i++) {
                     prefix = [prefix stringByReplacingOccurrencesOfString:variables[i] withString:[env[i] description]];
+                }
+                if ([prefix rangeOfString:@"$timestamp"].location!=NSNotFound) {
+                    //replace timestamps
+                    NSDateComponents *dc = [[NSCalendar currentCalendar] components:NSCalendarUnitDay | NSCalendarUnitMonth | NSCalendarUnitYear | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond fromDate:[NSDate date]];
+                    NSString* timestamp = [NSString stringWithFormat:@"%i-%i-%i %i:%i:%i", dc.year, dc.month, dc.day, dc.hour, dc.minute, dc.second ];
+                    prefix = [prefix stringByReplacingOccurrencesOfString:@"$timestamp" withString:timestamp];
                 }
                 text = [NSString stringWithFormat:@"%@ %@", prefix, text];
             }
