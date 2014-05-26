@@ -14,39 +14,21 @@ Pod::Spec.new do |s|
   s.version      = "0.6.1"
   s.summary      = "NSLog replacement for coders!"
 
-  s.description  = <<-DESC
-                   A longer description of MTLog in Markdown format.
+  s.description  = "Logging is essential part of debugging and I was often irritated that NSLog is not as flexible as I'd like it to be. Therefore I came around writing MTLog - the flexible logging tool that I need."
 
-                   * Think: Why did you write this? What is the focus? What does it do?
-                   * CocoaPods will be using this to generate tags, and improve search results.
-                   * Try to keep it short, snappy and to the point.
-                   * Finally, don't worry about the indent, CocoaPods strips it!
-                   DESC
+
 
   s.homepage     = "https://github.com/icanzilb/MTLog"
 
   s.license      = "MIT (example)"
   # s.license      = { :type => "MIT", :file => "FILE_LICENSE" }
 
-
-  # ――― Author Metadata  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
-  
   s.author             = { "Marin Todorov" => "touch-code-magazine@underplot.com" }
-
-  # ――― Source Location ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
   s.source       = { :git => "https://github.com/icanzilb/MTLog.git", :tag => "0.6.1" }
 
-
-  # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
-
   s.source_files  = "MTLog", "MTLog/**/*.{h,m}"
   s.exclude_files = "Classes/Exclude"
-
-  # s.public_header_files = "Classes/**/*.h"
-
-
-  # ――― Project Settings ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
 
   s.requires_arc = true
 
